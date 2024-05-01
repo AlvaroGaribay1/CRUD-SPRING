@@ -1,9 +1,6 @@
 package com.practica1Spring.practica1.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +18,7 @@ public class Usuario {
     @Getter @Setter @Column(name = "id")
     //Asignamos la clave primaria o identificador
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Getter @Setter @Column(name = "nombre")
