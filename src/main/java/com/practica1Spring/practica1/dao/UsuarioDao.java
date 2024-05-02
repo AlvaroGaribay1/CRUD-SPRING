@@ -11,4 +11,6 @@ public interface UsuarioDao {
     void eliminarUsuario(int id);
 
     void crear(Usuario usuario);
+
+    boolean verificarEmailWithPassword(Usuario usuario);
 }
