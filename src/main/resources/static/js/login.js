@@ -20,10 +20,22 @@ async function iniciarSesion() {
 
        const response = await request.text();
 
-    if (response == 'OK') {
+
+    if (response != "fail") {
+        localStorage.token = response;
+        localStorage.email = datos.email;
         window.location.href = 'usuarios.html';
+        Swal.fire ({
+            title: "Good job!",
+            text: "You clicked the button!",
+            icon: "success"
+        })
     } else {
-        alert("Las credemciales son incorrectas");
+        Swal.fire ({
+            icon: "error",
+            title: "Oops...",
+            text: "Hay un problema con las credenciales"
+        })
     }
 
 }

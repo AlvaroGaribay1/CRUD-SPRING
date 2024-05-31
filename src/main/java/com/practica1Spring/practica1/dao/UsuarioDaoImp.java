@@ -33,20 +33,23 @@ public class UsuarioDaoImp implements UsuarioDao {
         entityManager.merge(usuario);
     }
 
-    public boolean verificarEmailWithPassword(Usuario usuario) {
+    public Usuario obtenerUsuarioEmailWithPassword(Usuario usuario) {
         String query = "FROM Usuario WHERE email = :email";
         List<Usuario> lista = entityManager.createQuery(query)
                 .setParameter("email", usuario.getEmail())
                 .getResultList();
 
         if (lista.isEmpty()) {
-            return false;
+            return null;
         }
 
         String passwordHashed = lista.get(0).getPassword();
 
         Argon2 argon = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-        return argon.verify(passwordHashed, usuario.getPassword());
+        if(argon.verify(passwordHashed, usuario.getPassword())) {
+            return lista.get(0);
+        }
+        return null;
 
     }
 }

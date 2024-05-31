@@ -3,11 +3,11 @@ package com.practica1Spring.practica1.controllers;
 
 import com.practica1Spring.practica1.dao.UsuarioDao;
 import com.practica1Spring.practica1.models.Usuario;
+import com.practica1Spring.practica1.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -15,6 +15,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioDao usuarioDao;
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @RequestMapping(value = "api/usuario/{id}")
     public Usuario getUsuario(@PathVariable Integer id) {
@@ -30,12 +33,27 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "api/usuarios", method = RequestMethod.GET)
-    public List<Usuario> getUsuarios() {
+    public List<Usuario> getUsuarios(@RequestHeader(value = "Authorization") String token) {
+        if (!validarToken(token)) {
+            return null;
+        }
+
         return usuarioDao.getUsuarios();
     }
 
+    private boolean validarToken(String token) {
+        String usuarioId = jwtUtil.getKey(token);
+        return usuarioId != null;
+
+    }
+
     @RequestMapping(value = "api/usuario/{id}", method = RequestMethod.DELETE)
-    public void eliminarUsuario(@PathVariable int id) {
+    public void eliminarUsuario(@RequestHeader(value = "Authorization") String token, @PathVariable int id) {
+
+        if (!validarToken(token)) {
+            return;
+        }
+
         usuarioDao.eliminarUsuario(id);
     }
 
