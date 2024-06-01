@@ -64,4 +64,9 @@ public class UsuarioController {
         usuario.setPassword(hash);
         usuarioDao.crear(usuario);
     }
+
+    @RequestMapping(value = "api/usuario/{id}", method = RequestMethod.PUT)
+    public Usuario updateUsuario (@PathVariable int id, @RequestBody Usuario usuario) {
+        return usuarioDao.updateUsuario(id, usuario);
+    }
 }

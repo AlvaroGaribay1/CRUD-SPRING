@@ -10,6 +10,8 @@ public interface UsuarioDao {
 
     void eliminarUsuario(int id);
 
+    Usuario updateUsuario(int id, Usuario usuario);
+
     void crear(Usuario usuario);
 
     Usuario obtenerUsuarioEmailWithPassword(Usuario usuario);

@@ -32,11 +32,12 @@ async function cargarUsuarios() {
        for(usuario of usuarios) {
 
           let deleteButton = '<a onclick="confirmation('+ usuario.id +')" href="#" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a>'
+          let updateButton = '<a onclick="updateUsuario('+ usuario.id +')" href="#"  class="btn btn-warning btn-circle btn-sm"> <i class="fas fa-pen"></i></a>'
 
 
           let usuarioHTML = '<tr><td>' + usuario.id + '</td><td>'+ usuario.nombre +' '+ usuario.apellido +'</td><td>'
           + usuario.email +'</td><td>'+ usuario.phone
-          +'</td><td>' + deleteButton+ '</td></tr>';
+          +'</td><td>' + deleteButton+' '+ updateButton + '</td></tr>';
           listadoHTML += usuarioHTML;
        }
 
@@ -65,4 +66,18 @@ async function eliminarUsuario(id) {
      headers: getHeaders()
      });
     location.reload();
+}
+
+async function updateUsuario(id) {
+        const response = await fetch("api/usuario/" + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                ...getHeaders()
+            },
+            body: JSON.stringify(usuario)
+        });
+
+    const updatedUsuario = await response.json();
+    console.log(updatedUsuario);
 }
